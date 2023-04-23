@@ -9,8 +9,13 @@ add_executable(cadappcam main.cpp)
 target_compile_options(cadappcam PUBLIC $<$<COMPILE_LANGUAGE:CXX>: -g >)
 add_compile_definitions(__DEBUG__)
 
+find_package(X11 REQUIRED)
+find_package(OpenGL REQUIRED)
+find_package(glfw3 REQUIRED)
+
 target_compile_features(cadappcam PUBLIC cxx_std_17)
-target_include_directories(cadappcam PUBLIC "/usr/include/opencascade/")
+target_include_directories(cadappcam PUBLIC "/usr/include/opencascade/"
+                                            ${X11_INCLUDE_DIR})
 target_link_libraries(
   cadappcam
   PUBLIC TKService
@@ -20,4 +25,9 @@ target_link_libraries(
          TKBO
          TKPrim
          TKMesh
-         TKTopAlgo)
+         TKTopAlgo
+         TKV3d
+         TKOpenGl
+         ${X11_LIBRARIES}
+         glfw
+         OpenGL::GL)
