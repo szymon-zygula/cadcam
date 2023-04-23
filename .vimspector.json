@@ -1,0 +1,15 @@
+{
+    "configurations": {
+        "Launch": {
+            "adapter": "CodeLLDB",
+            "configuration": {
+                "request": "launch",
+                "program": "build/cadappcam",
+                "args": [ ],
+                "externalConsole": true,
+                "MIMode": "lldb",
+                "MiDebuggerPath": "lldb-13"
+            }
+        }
+    }
+}
