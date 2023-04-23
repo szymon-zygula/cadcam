@@ -4,7 +4,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 project(cadappcam LANGUAGES C CXX)
 
-add_executable(cadappcam main.cpp)
+add_executable(cadappcam main.cpp viewer.cpp ccwindow.cpp)
 
 target_compile_options(cadappcam PUBLIC $<$<COMPILE_LANGUAGE:CXX>: -g >)
 add_compile_definitions(__DEBUG__)
@@ -28,6 +28,7 @@ target_link_libraries(
          TKTopAlgo
          TKV3d
          TKOpenGl
+         TKGeomBase
          ${X11_LIBRARIES}
          glfw
          OpenGL::GL)
