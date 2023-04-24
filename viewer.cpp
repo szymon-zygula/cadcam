@@ -72,17 +72,11 @@ Viewer::Viewer(Window handle) {
     RenderParams.CollectedStats = Graphic3d_RenderingParams::PerfCounters_NONE;
 }
 
-void Viewer::add(TopoDS_Shape shape) { shapes.push_back(shape); }
-
 void Viewer::draw() {
+    context->EraseAll(true);
     for (auto sh : shapes) {
-        Handle(AIS_Shape) shape = new AIS_Shape(sh);
+        Handle(AIS_Shape) shape = new AIS_Shape(sh.shape);
         context->Display(shape, true);
         context->SetDisplayMode(shape, AIS_Shaded, true);
     }
-}
-
-void Viewer::reset() {
-    context->EraseAll(true);
-    shapes.clear();
 }

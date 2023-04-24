@@ -12,14 +12,16 @@
 struct CCWindow {
     GLFWwindow* window;
     std::unordered_map<int, bool> down;
-    double myWidth = 100.;
-    double myThickness = 100.;
 
     bool is_key_pressed(int key);
 
     CCWindow();
 
     void poll(Viewer& viewer);
+    bool is_running();
+
     Window x11();
+
+
     ~CCWindow();
 };
