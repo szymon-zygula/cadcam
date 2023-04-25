@@ -38,7 +38,6 @@ bool CCWindow::is_running() { return !glfwWindowShouldClose(window); }
 
 void CCWindow::poll(Viewer& viewer) {
     glfwPollEvents();
-    glfwSwapBuffers(window);
 }
 
 Window CCWindow::x11() { return glfwGetX11Window(window); }
