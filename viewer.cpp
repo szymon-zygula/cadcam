@@ -37,7 +37,6 @@ Viewer::Viewer(Window handle) {
 
     context = new AIS_InteractiveContext(viewer);
 
-    // Configure some global props.
     const Handle(Prs3d_Drawer)& contextDrawer = context->DefaultDrawer();
 
     if (!contextDrawer.IsNull()) {
@@ -45,16 +44,10 @@ Viewer::Viewer(Window handle) {
         const Handle(Graphic3d_AspectFillArea3d)& FA = SA->Aspect();
         contextDrawer->SetFaceBoundaryDraw(true); // Draw edges.
         FA->SetEdgeOff();
-
-        // Fix for inifinite lines has been reduced to 1000 from its default value 500000.
-        contextDrawer->SetMaximalParameterValue(1000);
     }
 
-    // Main view creation.
     view = viewer->CreateView();
     view->SetImmediateUpdate(false);
-
-    // evt_mgr = new ViewerInteractor(view, context); // TODO TODO TODO
 
     wnt_window = new Xw_Window(display_connection, handle);
     view->SetWindow(wnt_window, nullptr);
