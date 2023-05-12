@@ -17,6 +17,7 @@
 #include <Geom_TrimmedCurve.hxx>
 #include <IGESControl_Writer.hxx>
 #include <STEPControl_Writer.hxx>
+#include <TopoDS_Iterator.hxx>
 
 TopoDS_Wire build_wire() {
     constexpr double width = 100.;
@@ -112,6 +113,54 @@ struct Snake {
     void update() { viewer->shapes[idx] = Object(obj()); }
 };
 
+std::string shape_type_string(TopAbs_ShapeEnum type) {
+    switch (type) {
+    case TopAbs_COMPOUND:
+        return "Compound";
+    case TopAbs_COMPSOLID:
+        return "Compsolid";
+    case TopAbs_SOLID:
+        return "Solid";
+    case TopAbs_SHELL:
+        return "Shell";
+    case TopAbs_FACE:
+        return "Face";
+    case TopAbs_WIRE:
+        return "Wire";
+    case TopAbs_EDGE:
+        return "Edge";
+    case TopAbs_VERTEX:
+        return "Vertex";
+    case TopAbs_SHAPE:
+        return "Shape";
+    }
+
+    return "Unknown";
+}
+
+void print_topology(const TopoDS_Shape& shape, int depth = 0) {
+    TopoDS_Iterator iterator(shape);
+
+    for (int i = 0; i < depth; ++i) {
+        std::cout << "  ";
+    }
+
+    std::cout << shape_type_string(shape.ShapeType());
+
+    if (shape.ShapeType() == TopAbs_VERTEX) {
+        auto s = shape.TShape();
+        auto pnt = dynamic_cast<BRep_TVertex*>(s.get())->Pnt();
+        std::cout << " (" << pnt.X() << ", " << pnt.Y() << ", " << pnt.Z() << ")";
+    }
+
+    std::cout << std::endl;
+
+    while (iterator.More()) {
+        print_topology(iterator.Value(), depth + 1);
+        iterator.Next();
+    }
+}
+
 int main() {
     CCWindow window;
     Viewer viewer(window.x11());
@@ -169,6 +218,24 @@ int main() {
             swriter.Transfer(viewer.shapes[2].shape, mode);
             swriter.Transfer(viewer.shapes[3].shape, mode);
             swriter.Write("ksztalty.stp");
+        }
+
+        if (window.is_key_pressed(GLFW_KEY_A)) {
+            std::cout << "Face extrusion" << std::endl;
+            print_topology(viewer.shapes[0].shape);
+            std::cout << std::endl;
+
+            std::cout << "Face rotation" << std::endl;
+            print_topology(viewer.shapes[1].shape);
+            std::cout << std::endl;
+
+            std::cout << "Wire extrusion" << std::endl;
+            print_topology(viewer.shapes[2].shape);
+            std::cout << std::endl;
+
+            std::cout << "Wire rotation" << std::endl;
+            print_topology(viewer.shapes[3].shape);
+            std::cout << std::endl;
         }
     }
 }

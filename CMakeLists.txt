@@ -31,6 +31,7 @@ target_link_libraries(
          TKGeomBase
          TKSTEP
          TKIGES
+         TKBRep
          ${X11_LIBRARIES}
          glfw
          OpenGL::GL)
