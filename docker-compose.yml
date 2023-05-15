@@ -1,0 +1,19 @@
+version: "1"
+
+services:
+  app:
+    image: cadcamapp:latest
+    build: .
+    environment:
+      - DISPLAY=${DISPLAY}
+      - LIBGL_ALWAYS_INDIRECT=1
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix
+    network_mode: host
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              capabilities: ["gpu"]
+              count: 1
